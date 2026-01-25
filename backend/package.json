@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.91.1",
-    "cors": "^2.8.5",
+    "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "expo-server-sdk": "^4.0.0",
     "express": "^5.2.1",
