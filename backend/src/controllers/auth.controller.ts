@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import { authenticateWithGoogle } from "../services/auth.service.js";
-import { findUserById } from "../services/user.service.js";
+import { authenticateWithGoogle, generateJWT } from "../services/auth.service.js";
+import { findUserById, findUserByGoogleId, createUser } from "../services/user.service.js";
 import { AppError } from "../middleware/error-handler.js";
 
 /**
