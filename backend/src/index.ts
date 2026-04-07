@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth.routes.js";
 import diningHallRoutes from "./routes/dining-hall.routes.js";
 import swipeRoutes from "./routes/swipe.routes.js";
 import matchRoutes from "./routes/match.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/dining-halls", diningHallRoutes);
 app.use("/api/swipes", swipeRoutes);
 app.use("/api/matches", matchRoutes);
+app.use("/api/users", userRoutes);
 app.use(errorHandler);
 
 // Starting server

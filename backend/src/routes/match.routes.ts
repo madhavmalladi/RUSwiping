@@ -8,6 +8,11 @@ import {
   getMatch,
   markMatchComplete,
 } from "../controllers/match.controller.js";
+import {
+  sendMessageController,
+  getMessagesController,
+  getLatestMessageController,
+} from "../controllers/message.controller.js";
 import { authMiddleware } from "../middleware/auth.js";
 
 const router = Router();
@@ -35,5 +40,18 @@ router.get("/:matchId", getMatch);
 
 // PUT /api/matches/:matchId/complete
 router.put("/:matchId/complete", markMatchComplete);
+
+// ---------------------------- Message Routes ------------------------------
+
+// POST /api/matches/:matchId/messages
+// Body: { text }
+router.post("/:matchId/messages", sendMessageController);
+
+// GET /api/matches/:matchId/messages
+// Query: { limit?, offset? }
+router.get("/:matchId/messages", getMessagesController);
+
+// GET /api/matches/:matchId/messages/latest
+router.get("/:matchId/messages/latest", getLatestMessageController);
 
 export default router;

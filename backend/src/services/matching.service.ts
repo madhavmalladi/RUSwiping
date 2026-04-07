@@ -1,5 +1,6 @@
 import supabase from "../config/supabase.js";
 import type { Match, SwipeOffer, SwipeRequest, ServiceResult } from "../types/index.js";
+import { notifyMatchCreated } from "./notification.service.js";
 
 // Create a match between an offer and a request
 export async function createMatch(
@@ -69,6 +70,10 @@ export async function createMatch(
     await supabase.from("swipe_offers").update({ is_active: false }).eq("id", offerId);
 
     await supabase.from("swipe_requests").update({ is_active: false }).eq("id", requestId);
+
+    // Send push notifications to both users
+    const diningHallName = (match as any).dining_hall?.name || "the dining hall";
+    await notifyMatchCreated(giverId, receiverId, diningHallName, match.id);
 
     return { success: true, data: match as Match };
   } catch (error) {

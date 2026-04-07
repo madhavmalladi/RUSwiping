@@ -57,3 +57,58 @@ export async function getMe(req: Request, res: Response, next: NextFunction) {
     next(error);
   }
 }
+
+/**
+ * Test login for development (bypasses Google OAuth)
+ * POST /api/auth/test-login
+ * Body: { email, displayName? }
+ */
+export async function testLogin(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { email, displayName } = req.body;
+
+    if (!email) {
+      return next(new AppError("email is required", 400));
+    }
+
+    // Use email as a fake google_id for testing
+    const testGoogleId = `test-${email}`;
+
+    // Check if user exists
+    const existingUserResult = await findUserByGoogleId(testGoogleId);
+
+    if (!existingUserResult.success) {
+      return next(new AppError(existingUserResult.error || "Failed to find user", 500));
+    }
+
+    let user;
+
+    if (existingUserResult.data) {
+      user = existingUserResult.data;
+    } else {
+      // Create new test user
+      const createResult = await createUser({
+        googleId: testGoogleId,
+        email,
+        displayName: displayName || email.split("@")[0],
+      });
+
+      if (!createResult.success || !createResult.data) {
+        return next(new AppError(createResult.error || "Failed to create user", 500));
+      }
+
+      user = createResult.data;
+    }
+
+    // Generate JWT
+    const token = generateJWT(user);
+
+    res.json({
+      success: true,
+      token,
+      user,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
