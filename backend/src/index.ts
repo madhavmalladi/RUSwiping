@@ -27,7 +27,12 @@ app.use("/api/matches", matchRoutes);
 app.use("/api/users", userRoutes);
 app.use(errorHandler);
 
-// Starting server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Export app for testing
+export { app };
+
+// Only start server if this file is run directly (not imported for testing)
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}

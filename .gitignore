@@ -40,3 +40,7 @@ yarn-error.log*
 
 # TypeScript
 *.tsbuildinfo
+
+# Markdowns
+PROJECT_STATUS.md
+IMPLEMENTATION_GUIDE.md
